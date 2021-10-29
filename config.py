@@ -6,6 +6,8 @@
 # Copyright (c) 2013 horsik
 # Copyright (c) 2013 Tao Sauvage
 #
+#Copyright (c) 2021 Faruk Becirovic
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -45,25 +47,31 @@ keys = [
 
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
-    Key([mod, "shift"], "h", lazy.layout.shuffle_left(),
+    Key([mod, "shift"], "Left", lazy.layout.shuffle_left(),
         desc="Move window to the left"),
-    Key([mod, "shift"], "l", lazy.layout.shuffle_right(),
+    Key([mod, "shift"], "Right", lazy.layout.shuffle_right(),
         desc="Move window to the right"),
-    Key([mod, "shift"], "j", lazy.layout.shuffle_down(),
+    Key([mod, "shift"], "Down", lazy.layout.shuffle_down(),
         desc="Move window down"),
-    Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
+    Key([mod, "shift"], "Up", lazy.layout.shuffle_up(), desc="Move window up"),
 
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
-    Key([mod, "control"], "h", lazy.layout.grow_left(),
+    Key([mod, "control"], "Left", lazy.layout.grow_left(),
         desc="Grow window to the left"),
-    Key([mod, "control"], "l", lazy.layout.grow_right(),
+    Key([mod, "control"], "Right", lazy.layout.grow_right(),
         desc="Grow window to the right"),
-    Key([mod, "control"], "j", lazy.layout.grow_down(),
+    Key([mod, "control"], "Down", lazy.layout.grow_down(),
         desc="Grow window down"),
-    Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
+    Key([mod, "control"], "Up", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
-    Key([mod], "f", lazy.layout.maximize(), desc="Maximize focused window"),
+    Key([mod], "m", lazy.layout.maximize(), desc="Maximize window"),
+    Key([mod], "f", lazy.window.toggle_fullscreen(), desc="Toggle fullscreen"),
+    Key([mod], "\\", lazy.window.toggle_floating(), desc="Toggle floating"),
+    Key([mod, "shift"], "=", lazy.layout.increase_ratio(),
+        decs="Increase space for master window"),
+    Key([mod, "shift"], "-", lazy.layout.decrease_ratio(),
+        decs="Decrease space for master window"),
 
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
@@ -74,8 +82,11 @@ keys = [
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
 
     # Toggle between different layouts as defined below
-    Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
+    Key([mod], "`", lazy.next_layout(), desc="Apply next layout"),
+    Key([mod], "]", lazy.screen.next_group(), desc="Move to group on right"),
+    Key([mod], "[", lazy.screen.next_group(), desc="Move to group on left"),
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
+    Key([mod], "tab", lazy.screen.toggle_group(), desc="Move to previous group"),
 
     Key([mod, "control"], "r", lazy.restart(), desc="Restart Qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
@@ -88,8 +99,8 @@ keys = [
     Key([], 'XF86AudioMute', lazy.spawn('pulseaudio-ctl set 1')),
 
     # System hotkeys
-    Key([mod, "shift", "control"], "F11", lazy.spawn("sudo hibernate-reboot")),
-    Key([mod, "shift", "control"], "F12", lazy.spawn("systemctl hibernate")),
+    Key([mod, "control"], "F11", lazy.spawn("sudo hibernate-reboot")),
+    Key([mod, "control"], "F12", lazy.spawn("systemctl hibernate")),
 ]
 
 groups = [Group(i) for i in "123456789"]
