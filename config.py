@@ -36,10 +36,10 @@ terminal = guess_terminal()
 
 keys = [
     # Switch between windows
-    Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
-    Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
-    Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
-    Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
+    Key([mod], "Left", lazy.layout.left(), desc="Move focus to left"),
+    Key([mod], "Right", lazy.layout.right(), desc="Move focus to right"),
+    Key([mod], "Down", lazy.layout.down(), desc="Move focus down"),
+    Key([mod], "Up", lazy.layout.up(), desc="Move focus up"),
     Key([mod], "space", lazy.layout.next(),
         desc="Move window focus to other window"),
 
@@ -63,6 +63,7 @@ keys = [
         desc="Grow window down"),
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
+    Key([mod], "f", lazy.layout.maximize(), desc="Maximize focused window"),
 
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
@@ -74,12 +75,21 @@ keys = [
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
+    Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
 
     Key([mod, "control"], "r", lazy.restart(), desc="Restart Qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(),
-        desc="Spawn a command using a prompt widget"),
+    desc="Spawn a command using a prompt widget"),
+
+    # Media hotkeys
+    Key([], 'XF86AudioRaiseVolume', lazy.spawn('pulseaudio-ctl up 5')),
+    Key([], 'XF86AudioLowerVolume', lazy.spawn('pulseaudio-ctl down 5')),
+    Key([], 'XF86AudioMute', lazy.spawn('pulseaudio-ctl set 1')),
+
+    # System hotkeys
+    Key([mod, "shift", "control"], "F11", lazy.spawn("sudo hibernate-reboot")),
+    Key([mod, "shift", "control"], "F12", lazy.spawn("systemctl hibernate")),
 ]
 
 groups = [Group(i) for i in "123456789"]
@@ -103,14 +113,14 @@ layouts = [
     layout.Columns(border_focus_stack=['#d75f5f', '#8f3d3d'], border_width=4),
     layout.Max(),
     # Try more layouts by unleashing below layouts.
-    # layout.Stack(num_stacks=2),
+     layout.Stack(num_stacks=2),
     # layout.Bsp(),
-    # layout.Matrix(),
-    # layout.MonadTall(),
-    # layout.MonadWide(),
+     layout.Matrix(),
+     layout.MonadTall(),
+     layout.MonadWide(),
     # layout.RatioTile(),
-    # layout.Tile(),
-    # layout.TreeTab(),
+     layout.Tile(),
+     layout.TreeTab(),
     # layout.VerticalTile(),
     # layout.Zoomy(),
 ]
